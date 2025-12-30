@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { AccessibilityProvider } from './src/contexts/AccessibilityContext'
+import { VoiceModeProvider } from './src/contexts/VoiceModeContext'
 import HomeScreen from './src/screens/HomeScreen'
 import LearningModeScreen from './src/screens/LearningModeScreen'
 import AccessibilityModeScreen from './src/screens/AccessibilityModeScreen'
@@ -66,7 +67,8 @@ export default function App() {
   return (
     <ErrorBoundary>
       <AccessibilityProvider>
-        <SafeAreaProvider>
+        <VoiceModeProvider>
+          <SafeAreaProvider>
           <NavigationContainer
             onReady={() => console.log('Navigation ready')}
             onStateChange={() => console.log('Navigation state changed')}
@@ -170,7 +172,8 @@ export default function App() {
             />
             </Stack.Navigator>
           </NavigationContainer>
-        </SafeAreaProvider>
+          </SafeAreaProvider>
+        </VoiceModeProvider>
       </AccessibilityProvider>
     </ErrorBoundary>
   )

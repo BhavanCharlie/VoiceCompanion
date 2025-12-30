@@ -12,7 +12,7 @@
 .section-header {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 3px solid #e0e0e0;
 }
 
 .header-content {
@@ -51,26 +51,30 @@
 
 .input-section {
   margin-bottom: 1.5rem;
+  padding: 0;
 }
 
-.input-header {
+.input-header-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.label {
+.input-section .label {
   font-weight: 600;
   color: #333;
   font-size: 1rem;
+  margin: 0;
+  display: inline-block;
 }
 
 .input-actions {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
 }
 
 .voice-button {
@@ -141,6 +145,7 @@
   resize: vertical;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
+  margin-top: 0.5rem;
 }
 
 .text-input:focus {

@@ -11,6 +11,7 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../../App'
 import { useAccessibility } from '../contexts/AccessibilityContext'
+import { useVoiceMode } from '../contexts/VoiceModeContext'
 import { useAccessibleScreen, useAccessibleButton } from '../hooks/useAccessibleButton'
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>
@@ -22,6 +23,7 @@ interface Props {
 const HomeScreen = ({ navigation }: Props) => {
   console.log('HomeScreen rendering...')
   const { isEnabled, toggle } = useAccessibility()
+  const { isVoiceModeEnabled, toggleVoiceMode, isWakeWordActive } = useVoiceMode()
   
   // Announce screen when accessibility is enabled
   useAccessibleScreen(
@@ -62,15 +64,29 @@ const HomeScreen = ({ navigation }: Props) => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* Accessibility Toggle */}
-      <View style={styles.accessibilityToggleContainer}>
-        <Text style={styles.accessibilityLabel}>🔊 Voice Descriptions</Text>
-        <Switch
-          value={isEnabled}
-          onValueChange={toggle}
-          trackColor={{ false: '#767577', true: '#667eea' }}
-          thumbColor={isEnabled ? '#fff' : '#f4f3f4'}
-        />
+      {/* Accessibility & Voice Mode Toggles */}
+      <View style={styles.togglesContainer}>
+        <View style={styles.accessibilityToggleContainer}>
+          <Text style={styles.accessibilityLabel}>🔊 Voice Descriptions</Text>
+          <Switch
+            value={isEnabled}
+            onValueChange={toggle}
+            trackColor={{ false: '#767577', true: '#667eea' }}
+            thumbColor={isEnabled ? '#fff' : '#f4f3f4'}
+          />
+        </View>
+        
+        <View style={styles.voiceModeToggleContainer}>
+          <Text style={styles.voiceModeLabel}>
+            🎙️ Voice Mode {isWakeWordActive ? '(Listening...)' : ''}
+          </Text>
+          <Switch
+            value={isVoiceModeEnabled}
+            onValueChange={toggleVoiceMode}
+            trackColor={{ false: '#767577', true: '#4caf50' }}
+            thumbColor={isVoiceModeEnabled ? '#fff' : '#f4f3f4'}
+          />
+        </View>
       </View>
 
       <View style={styles.featuresContainer}>
@@ -162,6 +178,10 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 40, // Extra padding at bottom for scrolling
   },
+  togglesContainer: {
+    marginBottom: 20,
+    gap: 12,
+  },
   accessibilityToggleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -169,7 +189,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 16,
     borderRadius: 12,
-    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -177,6 +196,24 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   accessibilityLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  voiceModeToggleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  voiceModeLabel: {
     fontSize: 16,
     fontWeight: '600',
     color: '#333',

@@ -1,36 +1,63 @@
 .image-to-voice {
   background: white;
-  border-radius: 20px;
-  padding: 2.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  max-width: 900px;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
 }
 
-.section-header {
-  margin-bottom: 2.5rem;
-  text-align: center;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid #f0f0f0;
+.image-to-voice-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: none;
 }
 
-.section-header h2 {
-  font-size: 2.25rem;
+.image-to-voice-header .header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.image-to-voice-header .header-text {
+  flex: 1;
+}
+
+.camera-icon {
+  font-size: 4rem;
+  flex-shrink: 0;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+}
+
+.image-to-voice-header .header-title {
+  font-size: 2rem;
   font-weight: 700;
   color: #1a1a1a;
-  margin-bottom: 0.75rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0 0 0.25rem 0;
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.section-header p {
-  font-size: 1.1rem;
+.image-to-voice-header .header-subtitle {
+  font-size: 1rem;
   color: #666;
-  margin: 0;
-  line-height: 1.6;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+  font-weight: 400;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #e0e0e0;
 }
 
 .image-preview-section {
