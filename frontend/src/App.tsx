@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { VoiceModeProvider, useVoiceMode } from './contexts/VoiceModeContext'
 import VoiceConversation from './components/VoiceConversation'
 import FeedbackPanel from './components/FeedbackPanel'
 import ProgressTracker from './components/ProgressTracker'
@@ -11,9 +12,10 @@ import VoiceGuidedShopping from './components/VoiceGuidedShopping'
 import HomePage from './components/HomePage'
 import AnimatedLogo from './components/AnimatedLogo'
 import ScriptToMusic from './components/ScriptToMusic'
+import About from './components/About'
 import './App.css'
 
-type Page = 'home' | 'accessibility' | 'learning' | 'voice-to-art' | 'image-to-voice' | 'script-to-music' | 'real-time-guidance' | 'voice-guided-shopping'
+type Page = 'home' | 'accessibility' | 'learning' | 'voice-to-art' | 'image-to-voice' | 'script-to-music' | 'real-time-guidance' | 'voice-guided-shopping' | 'about'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
@@ -25,7 +27,9 @@ function App() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null)
 
   const handleNavigate = (page: string) => {
+    console.log('📍 handleNavigate called in App.tsx with page:', page, 'currentPage:', currentPage)
     setCurrentPage(page as Page)
+    console.log('📍 Page state updated to:', page)
   }
 
   const handleBackToHome = () => {
@@ -33,25 +37,119 @@ function App() {
   }
 
   return (
+    <VoiceModeProvider onNavigate={handleNavigate} currentPage={currentPage}>
+      <AppContent 
+        currentPage={currentPage}
+        handleNavigate={handleNavigate}
+        handleBackToHome={handleBackToHome}
+        selectedScenario={selectedScenario}
+        setSelectedScenario={setSelectedScenario}
+        selectedLanguage={selectedLanguage}
+        setSelectedLanguage={setSelectedLanguage}
+        selectedDifficulty={selectedDifficulty}
+        setSelectedDifficulty={setSelectedDifficulty}
+        currentFeedback={currentFeedback}
+        setCurrentFeedback={setCurrentFeedback}
+        cameraActive={cameraActive}
+        setCameraActive={setCameraActive}
+        capturedImage={capturedImage}
+        setCapturedImage={setCapturedImage}
+      />
+    </VoiceModeProvider>
+  )
+}
+
+interface AppContentProps {
+  currentPage: Page
+  handleNavigate: (page: string) => void
+  handleBackToHome: () => void
+  selectedScenario: string | null
+  setSelectedScenario: (scenario: string | null) => void
+  selectedLanguage: string
+  setSelectedLanguage: (language: string) => void
+  selectedDifficulty: string
+  setSelectedDifficulty: (difficulty: string) => void
+  currentFeedback: any
+  setCurrentFeedback: (feedback: any) => void
+  cameraActive: boolean
+  setCameraActive: (active: boolean) => void
+  capturedImage: string | null
+  setCapturedImage: (image: string | null) => void
+}
+
+const AppContent = ({
+  currentPage,
+  handleNavigate,
+  handleBackToHome,
+  selectedScenario,
+  setSelectedScenario,
+  selectedLanguage,
+  setSelectedLanguage,
+  selectedDifficulty,
+  setSelectedDifficulty,
+  currentFeedback,
+  setCurrentFeedback,
+  cameraActive,
+  setCameraActive,
+  capturedImage,
+  setCapturedImage
+}: AppContentProps) => {
+  const { isVoiceModeEnabled, toggleVoiceMode, isWakeWordActive } = useVoiceMode()
+
+  return (
     <div className="app" role="main">
       <header className="app-header" role="banner">
         <div className="header-content">
-          <AnimatedLogo size={96} />
+          <button 
+            className="logo-button"
+            onClick={handleBackToHome}
+            aria-label="Go to home page"
+          >
+            <AnimatedLogo size={96} />
+          </button>
           <div className="header-text">
             <h1>VoiceCompanion</h1>
             <p>Your Intelligent Voice Assistant for Accessibility & Learning</p>
           </div>
-          {currentPage !== 'home' && (
-            <button className="back-button" onClick={handleBackToHome} aria-label="Back to home">
-              ← Back to Home
+          <div className="header-actions">
+            {/* Voice Mode Toggle */}
+            <div className="global-voice-mode-toggle">
+              <label className="voice-mode-toggle">
+                <span className="voice-mode-label">
+                  🎙️ Voice Mode 
+                  {isWakeWordActive && <span className="listening-indicator"> (Listening...)</span>}
+                  {isVoiceModeEnabled && !isWakeWordActive && <span className="ready-indicator"> (Ready)</span>}
+                </span>
+                <input
+                  type="checkbox"
+                  checked={isVoiceModeEnabled}
+                  onChange={toggleVoiceMode}
+                  className="voice-mode-switch"
+                />
+                <span className="voice-mode-slider"></span>
+              </label>
+            </div>
+            {currentPage !== 'home' && currentPage !== 'about' && (
+              <button className="back-button" onClick={handleBackToHome} aria-label="Back to home">
+                ← Back to Home
+              </button>
+            )}
+            <button 
+              className="about-button" 
+              onClick={() => handleNavigate('about')}
+              aria-label="About VoiceCompanion"
+            >
+              👁️ About
             </button>
-          )}
+          </div>
         </div>
       </header>
 
       <main className="app-main">
         {currentPage === 'home' ? (
           <HomePage onNavigate={handleNavigate} />
+        ) : currentPage === 'about' ? (
+          <About onNavigate={handleNavigate} />
         ) : currentPage === 'voice-to-art' ? (
           <div className="app-content voice-to-art-content">
             <div className="left-panel full-width">

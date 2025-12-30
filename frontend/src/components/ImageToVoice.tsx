@@ -124,9 +124,14 @@ const ImageToVoice = () => {
 
   return (
     <div className="image-to-voice">
-      <div className="section-header">
-        <h2>📸 Image to Voice</h2>
-        <p>Capture or upload an image to get a detailed voice description</p>
+      <div className="image-to-voice-header">
+        <div className="header-content">
+          <div className="camera-icon">📸</div>
+          <div className="header-text">
+            <h1 className="header-title">Image to Voice</h1>
+            <p className="header-subtitle">Capture or upload an image to get a detailed voice description</p>
+          </div>
+        </div>
       </div>
 
       <CameraCapture

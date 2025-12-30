@@ -30,7 +30,7 @@ const ScriptToMusic = () => {
   const [isRecording, setIsRecording] = useState(false)
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [musicLength, setMusicLength] = useState(180) // 3 minutes in seconds
+  const [musicLength, setMusicLength] = useState(30) // 30 seconds default
   const [musicStyle, setMusicStyle] = useState('acoustic')
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -247,7 +247,7 @@ const ScriptToMusic = () => {
       </div>
 
       <div className="input-section">
-        <div className="input-header">
+        <div className="input-header-row">
           <label className="label">Describe the music you want:</label>
           <div className="input-actions">
             <button
@@ -295,7 +295,7 @@ const ScriptToMusic = () => {
             max="600"
             step="30"
             value={musicLength}
-            onChange={(e) => setMusicLength(parseInt(e.target.value) || 180)}
+            onChange={(e) => setMusicLength(parseInt(e.target.value) || 30)}
             disabled={loading}
           />
           <span className="length-hint">({Math.floor(musicLength / 60)} min {musicLength % 60} sec)</span>
